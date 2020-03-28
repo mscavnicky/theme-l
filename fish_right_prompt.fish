@@ -11,6 +11,10 @@ function _ruby_gemset
   echo (command rbenv gemset active 2> /dev/null | sed -e 's| global||')
 end
 
+function _aws_profile_info
+  echo $AWS_PROFILE
+end
+
 function fish_right_prompt
   if [ "$theme_display_rbenv" = 'yes' ]
     set -l red (set_color red)
@@ -32,6 +36,14 @@ function fish_right_prompt
       end
     else
       echo -n -s $ruby_info $normal
+    end
+  end
+
+  if [ "$theme_display_aws_profile" = 'yes' ]
+    if env | grep -q "^AWS_PROFILE="
+      set -l red (set_color red)
+      set -l aws_profile_info $red(_aws_profile_info)    
+      echo -n -s $aws_profile_info
     end
   end
 end
