@@ -15,6 +15,10 @@ function _aws_profile_info
   echo $AWS_PROFILE
 end
 
+function _aws_region_info
+  echo $AWS_REGION
+end
+
 function fish_right_prompt
   if [ "$theme_display_rbenv" = 'yes' ]
     set -l red (set_color red)
@@ -43,7 +47,16 @@ function fish_right_prompt
     if env | grep -q "^AWS_PROFILE="
       set -l red (set_color red)
       set -l aws_profile_info $red(_aws_profile_info)    
-      echo -n -s $aws_profile_info
+      
+      
+      if env | grep -q "^AWS_REGION="
+        set -l aws_region_info $red(_aws_region_info)
+        set aws_info "$aws_profile_info:$aws_region_info"
+      else
+        set aws_info $aws_profile_info
+      end
+        
+      echo -n -s $aws_info
     end
   end
 end
